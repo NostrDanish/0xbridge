@@ -1,0 +1,16 @@
+{
+  "name": "0xbridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Telegram Serverless bot + Mini App bridging Telegram users to Nostr.",
+  "type": "module",
+  "scripts": {
+    "deploy": "tgcloud push && tgcloud migrate",
+    "status": "tgcloud status",
+    "run:message": "tgcloud run handlers/message",
+    "setup:bot": "cd setup && BOT_TOKEN=\"$BOT_TOKEN\" ./setup_bot.sh"
+  },
+  "devDependencies": {
+    "@tgcloud/cli": "latest"
+  }
+}

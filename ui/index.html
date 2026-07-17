@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>0xBridge — Privacy Nostr Bridge</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<style>
+:root{--bg:#0b0e14;--fg:#e6e6e6;--acc:#7c5cff;--mut:#8a8f98}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg);line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding:24px}
+h1{font-size:1.8rem;margin:0 0 4px}
+.sub{color:var(--mut);margin:0 0 24px}
+.card{background:#141923;border:1px solid #232a36;border-radius:12px;padding:18px;margin-bottom:16px}
+label{display:block;font-size:.85rem;color:var(--mut);margin:12px 0 4px}
+textarea,input{width:100%;background:#0b0e14;border:1px solid #232a36;border-radius:8px;color:var(--fg);padding:10px;font-size:.95rem;font-family:inherit}
+button{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:11px 18px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:14px}
+button:active{opacity:.85}
+.note{font-size:.8rem;color:var(--mut);margin-top:10px}
+.badge{display:inline-block;background:#1d2430;color:var(--acc);border-radius:6px;padding:2px 8px;font-size:.75rem;font-family:monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>0xBridge</h1>
+  <p class="sub">Privacy-first Nostr bridge by 0xPrivacy. No email. No accounts. Your npub is your identity.</p>
+
+  <div class="card">
+    <strong>Send a message to the bridge</strong>
+    <p class="note">Messages are delivered as NIP-17 gift-wrapped DMs. The bridge reads them, parses <span class="badge">idea:</span> lines and links, and replies via DM. Nothing is stored on a server — only on the relay, ephemerally.</p>
+    <label for="msg">Your message</label>
+    <textarea id="msg" rows="5" placeholder="idea: build a Tor-only relay mode&#10;https://github.com/NostrDanish/0xflare"></textarea>
+    <label for="contact">Reply-to npub (optional)</label>
+    <input id="contact" placeholder="npub1...">
+    <button id="send">Encrypt &amp; Send via Nostr</button>
+    <p class="note" id="status">Status: idle</p>
+  </div>
+
+  <div class="card">
+    <strong>Admission</strong>
+    <p class="note">This bridge is free to use. For relay access (NosFlare compute), the bridge replies with payment or details via DM. No email, no forms — just a Nostr DM back to you.</p>
+  </div>
+
+  <div class="card">
+    <strong>How it works</strong>
+    <p class="note">1. This site is hosted as an <span class="badge">nsite</span> (NIP-5A) — static files on Blossom, served from the bridge npub subdomain.<br>2. Your message is encrypted client-side with NIP-44 and sent as a gift-wrapped DM.<br>3. The bridge bot decrypts, logs the signal, and replies.<br>4. No backend, no tracking, no vendor lock-in.</p>
+  </div>
+</div>
+<script src="/assets/bridge.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0xBridge Mini App</title>
+<style>
+  body { font-family: system-ui, sans-serif; background:#0d1117; color:#e6edf3; margin:0; padding:16px; }
+  h1 { font-size:18px; } .card { background:#161b22; border:1px solid #30363d; border-radius:10px; padding:12px; margin:10px 0; }
+  button { background:#238636; color:#fff; border:0; padding:10px 14px; border-radius:8px; font-size:15px; width:100%; margin:6px 0; }
+  textarea { width:100%; box-sizing:border-box; background:#0d1117; color:#e6edf3; border:1px solid #30363d; border-radius:8px; padding:10px; font-size:15px; }
+  .note { font-size:13px; border-left:3px solid #58a6ff; padding-left:8px; margin:6px 0; white-space:pre-wrap; word-break:break-word; }
+  .muted { color:#8b949e; font-size:12px; } .id { font-size:11px; word-break:break-all; color:#58a6ff; }
+  #status { min-height:18px; }
+</style>
+</head>
+<body>
+<h1>🌉 0xBridge</h1>
+<div class="muted">Telegram ⇄ Nostr. Your notes, mirrored across networks.</div>
+<div class="card">
+  <div class="muted">Your Nostr identity (from bot):</div>
+  <div class="id" id="id">loading…</div>
+</div>
+<div class="card">
+  <textarea id="content" rows="3" placeholder="Write a note…"></textarea>
+  <button onclick="post()">Publish to Nostr</button>
+  <div id="status" class="muted"></div>
+</div>
+<div class="card">
+  <button onclick="loadFeed()">Load my Nostr feed</button>
+  <div id="feed"></div>
+</div>
+<script>
+const BRIDGE = 'https://0xbridge-worker.<your-sub>.workers.dev'; // <-- set to your Worker URL
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) { tg.expand(); tg.ready(); }
+
+// Bot launches Mini App with ?pub=<hex> (hex pubkey) as start_param.
+const params = new URLSearchParams(location.search);
+let pub = params.get('pub') || (tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param) || '';
+document.getElementById('id').textContent = pub || 'no identity — open via /app in the bot';
+
+async function loadFeed() {
+  const feedEl = document.getElementById('feed');
+  if (!pub) { feedEl.innerHTML = '<div class="muted">No pubkey. Use /app in chat.</div>'; return; }
+  feedEl.innerHTML = '<div class="muted">loading…</div>';
+  try {
+    const res = await fetch(BRIDGE + '/query?pub=' + encodeURIComponent(pub) + '&limit=10');
+    const notes = await res.json();
+    feedEl.innerHTML = notes.length
+      ? notes.map(n => '<div class="note">' + escapeHtml(n.content) + '</div>').join('')
+      : '<div class="muted">No notes on relays yet.</div>';
+  } catch (e) { feedEl.innerHTML = '<div class="muted">bridge error</div>'; }
+}
+
+// The Mini App cannot sign with the user key (bot holds it). Ask the bot to publish:
+// open chat, send /post <text>. Real in-browser signing needs a self-held key (TODO).
+async function post() {
+  const content = document.getElementById('content').value.trim();
+  if (!content) return;
+  document.getElementById('status').textContent = 'Open the chat and send: /post ' + content.slice(0, 50);
+}
+
+function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+loadFeed();
+</script>
+</body>
+</html>

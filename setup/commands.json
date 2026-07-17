@@ -1,0 +1,8 @@
+[
+  { "command": "start",  "description": "Welcome + command list" },
+  { "command": "whoami", "description": "Show your Nostr identity (npub)" },
+  { "command": "post",   "description": "Publish a note to Nostr: /post <text>" },
+  { "command": "feed",   "description": "Your latest Nostr notes: /feed [n]" },
+  { "command": "mirror", "description": "Mirror current chat context to a Nostr event" },
+  { "command": "app",    "description": "Open the 0xBridge Mini App" }
+]

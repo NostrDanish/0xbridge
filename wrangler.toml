@@ -1,0 +1,11 @@
+name = "0xbridge-worker"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+# No kv needed; stateless bridge. Free tier is plenty.
+[vars]
+# Comma-separated relay list. Override per-environment.
+RELAYS = "wss://relay.damus.io,wss://nos.lol,wss://relay.primal.net,wss://relay.snort.social"
+
+# If you want to lock the bridge to only your bot's calls, set a shared secret:
+# BRIDGE_TOKEN = "set-via-wrangler-secret"

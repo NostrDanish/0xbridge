@@ -1,0 +1,5 @@
+{
+  "description": "0xBridge — your Telegram ⇄ Nostr super-layer. Get a Nostr identity, post notes that mirror to Nostr relays, and read your feed without leaving Telegram. Privacy-first, key held by the bot, signed events broadcast to decentralized relays.",
+  "short_description": "Telegram ⇄ Nostr bridge bot",
+  "name": "0xBridge"
+}
